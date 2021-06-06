@@ -37,6 +37,39 @@ const userController = {
             res.status(400).json(err);
         })
     },
+
+    // create new user
+    addNewUser({ body }, res) {
+        User.create(body)
+            .then(dbUserData => res.json(dbUserData))
+            .catch(err => res.status(400).json(err));
+    },
+
+    // update by id
+    updateUser({ params, body }, res) {
+        User.findOneAndUpdate({ _id: params.id }, body, { new: true })
+            .then(dbUserData => {
+                if(!dbUserData)  {
+                    res.status(404).json({ message: 'No user found with that id' });
+                    return;
+                }
+                res.json(dbPizzaData);
+            })
+            .catch(err => res.status(400).json(err));
+    },
+
+    // delete by id
+    deleteUser({ params }, res) {
+        User.findOneAndDelete({ _id: params.id })
+            .then(dbUserData => {
+                if(!dbUserData) {
+                    res.status(404).json(err);
+                    return;
+                }
+                res.json(dbUserData);
+            })
+            .catch(err => res.status(400).json(err));
+    }
 };
 
 module.exports = userController;
