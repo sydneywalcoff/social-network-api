@@ -39,7 +39,7 @@ const userController = {
     },
 
     // create new user
-    addNewUser({ body }, res) {
+    createUser({ body }, res) {
         User.create(body)
             .then(dbUserData => res.json(dbUserData))
             .catch(err => res.status(400).json(err));
@@ -47,13 +47,13 @@ const userController = {
 
     // update by id
     updateUser({ params, body }, res) {
-        User.findOneAndUpdate({ _id: params.id }, body, { new: true })
+        User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
             .then(dbUserData => {
                 if(!dbUserData)  {
                     res.status(404).json({ message: 'No user found with that id' });
                     return;
                 }
-                res.json(dbPizzaData);
+                res.json(dbUserData);
             })
             .catch(err => res.status(400).json(err));
     },
