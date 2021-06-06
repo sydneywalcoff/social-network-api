@@ -27,7 +27,8 @@ const ThoughtSchema = new Schema(
     }
 );
 
-ThoughtSchema.virtual('reactionCount').get(() => this.reactions.length);
+// reAdd with reaction schema
+// ThoughtSchema.virtual('reactionCount').get(() => this.reactions.length);
 
 const Thought = model('Thought', ThoughtSchema);
 
