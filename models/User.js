@@ -15,10 +15,10 @@ const UserSchema = new Schema(
             match: /.+\@.+\..+/   
         },
         thoughts: [
-            // {
-            //     type: Schema.Types.ObjectId,
-            //     ref: 'Thought'
-            // }
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Thought'
+            }
         ],
         friends: [],
     },
