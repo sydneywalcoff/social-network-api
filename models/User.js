@@ -12,7 +12,7 @@ const UserSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            // must match valid email address => look for mongoose matching validation for email
+            match: /.+\@.+\..+/   
         },
         thoughts: [
             // {
