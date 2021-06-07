@@ -15,18 +15,17 @@ const thoughtController = {
     // get one thought by id
     getThoughtById({ params }, res) {
         Thought.findOne({ _id: params.thoughtId })
-        .select('-__v')
-        .then(dbThoughtData => {
-            if(!dbThoughtData) {
-                res.status(404).json({ message: 'No thought found with that id!' });
-                return;
-            }
-            res.json(dbThoughtData);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(400).json(err);
-        });
+            .then(dbThoughtData => {
+                if(!dbThoughtData) {
+                    res.status(404).json({ message: 'No thought found with that id!' });
+                    return;
+                }
+                res.json(dbThoughtData);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(400).json(err);
+            });
     },
 
     // create new Thought
@@ -37,7 +36,12 @@ const thoughtController = {
                     { _id: params.userId},
                     { $push: { thoughts: _id } },
                     { new: true }
-                );
+                )
+                .populate({
+                    path: 'thoughts',
+                    select: '-__v'
+                })
+                .select('-__v');
             })
             .then(dbThoughtData => {
                 if(!dbThoughtData) {
@@ -63,7 +67,7 @@ const thoughtController = {
 
     // delete by id
     deleteThought({ params }, res) {
-        Thought.findOneAndDelete({ _id: params.commentId })
+        Thought.findOneAndDelete({ _id: params.thoughtId })
             .then(deletedThought => {
                 if(!deletedThought) {
                     res.status(404).json(err);
@@ -73,11 +77,16 @@ const thoughtController = {
                     { _id: params.userId },
                     { $pull: { thoughts: params.thoughtId } },
                     { new: true }
-                );
+                )
+                .populate({
+                    path: 'thoughts',
+                    select: '-__v'
+                })
+                .select('-__v');
             })
             .then(dbUserData => {
                 if(!dbUserData ) {
-                    res.status(404).json({ message: 'No User found with that id' });
+                    res.status(404).json({ message: 'No ser found with that id' });
                     return;
                 }
                 res.json(dbUserData);
