@@ -5,12 +5,12 @@ const ReactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => Types.ObjectId()
+            default: () => new Types.ObjectId()
         },
         reactionBody: {
             type: String,
             required: true,
-            maxlength: 280
+            maxLength: 280
         },
         username: {
             type: String,
@@ -18,15 +18,14 @@ const ReactionSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now
-            // dateformat
+            default: Date.now,
+            get: createdAtVal => dateFormat(createdAtVal)
         }
     },
     {
         toJSON: {
             getters: true
-        },
-        id: false
+        }
     }
 );
 
