@@ -110,12 +110,11 @@ const thoughtController = {
                 .populate({
                     path: 'thoughts',
                     select: '-__v'
-                })
-                .select('-__v');
+                });
             })
             .then(dbUserData => {
                 if(!dbUserData ) {
-                    res.status(404).json({ message: 'No ser found with that id' });
+                    res.status(404).json({ message: 'No user found with that id' });
                     return;
                 }
                 res.json(dbUserData);
