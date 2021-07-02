@@ -82,22 +82,7 @@ const userController = {
                 if(!dbUserData) {
                     return res.status(404).json(err);
                 }
-                User.findOneAndUpdate(
-                    { _id: params.friendId },
-                    { $push: { friends: params.id } },
-                    { new: true, runValidators: true }
-                )
-                    .populate({
-                        path: 'friends',
-                        select: '-__v'
-                    })
-                    .then(dbOtherUserData => {
-                        if(!dbOtherUserData) {
-                            return res.status(404).json(err);
-                        }
-                        res.json(dbUserData);
-                    })
-                res.json(dbUserData)
+                res.json(dbUserData);
             });
     },
 
