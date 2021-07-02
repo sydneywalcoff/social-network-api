@@ -82,6 +82,21 @@ const userController = {
                 if(!dbUserData) {
                     return res.status(404).json(err);
                 }
+                User.findOneAndUpdate(
+                    { _id: params.friendId },
+                    { $push: { friends: params.id } },
+                    { new: true, runValidators: true }
+                )
+                    .populate({
+                        path: 'friends',
+                        select: '-__v'
+                    })
+                    .then(dbOtherUserData => {
+                        if(!dbOtherUserData) {
+                            return res.status(404).json(err);
+                        }
+                        res.json(dbUserData);
+                    })
                 res.json(dbUserData)
             });
     },
@@ -92,10 +107,11 @@ const userController = {
             { _id: params.id },
             { $pull: { friends: params.friendId } },
             { new: true, runValidators: true }, 
-        ).then(deletedFriend => {
-            if(!deletedFriend) {
+        ).then(updatedUser => {
+            if(!updatedUser) {
                 return res.status(404).json(err);
             }
+            res.json(updatedUser);
         })
     }
 };
